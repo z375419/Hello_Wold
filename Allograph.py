@@ -1,8 +1,15 @@
-from public.character import is_variant
 from docx import Document
 import fitz
 import os
 import re
+import unicodedata
+
+def is_variant(character):
+    category = unicodedata.category(character)
+    # if category in ['Lu', 'Ll', 'Lo', 'Nd', 'Po', 'Ps', 'Pe', 'Pd', 'Zs', 'Sm']:
+    if category not in ['So']:
+        return False
+    return True
 
 def get_variant_character(text):
     t = []
