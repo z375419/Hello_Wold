@@ -15,6 +15,8 @@ self.g
 
 
 db
+self.dw_url = url = f'mssql+pymssql://{username}:{password}@{server}:{port}/DW'
+
     def drop_database(self):
         try:
             self.session.query(Customer).delete()
@@ -29,14 +31,20 @@ db
         # 3.2 DW.[dbo].[P_PTY_CUST_CRD_EQ]
         # 3.3 DW.[dbo].[P_PTY_CUST_CRD_FIN]
         try:
+            url = self.dw_url
+            engine = create_engine(url)
+            Session = sessionmaker(bind=engine)
+            session = Session()
             # self.session.execute("CALL DW.dbo.P_PTY_CUST_CRD_H")
             # self.session.execute("CALL DW.dbo.P_PTY_CUST_CRD_EQ")
             # self.session.execute("CALL DW.dbo.P_PTY_CUST_CRD_FIN")
-            self.session.execute("exec DW.[dbo].[P_PTY_CUST_CRD_H]")
-            self.session.execute("exec DW.[dbo].[P_PTY_CUST_CRD_EQ]")
-            self.session.execute("exec DW.[dbo].[P_PTY_CUST_CRD_FIN]")
+            session.execute("exec DW.[dbo].[P_PTY_CUST_CRD_H]")
+            session.execute("exec DW.[dbo].[P_PTY_CUST_CRD_EQ]")
+            session.execute("exec DW.[dbo].[P_PTY_CUST_CRD_FIN]")
         except Exception as e:
             return str(e)
+        finally:
+            session.close()
         return '执行存储过程成功'
 
 
