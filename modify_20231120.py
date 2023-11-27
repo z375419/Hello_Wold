@@ -4,6 +4,12 @@ from src.models import  RobotRec
 from src.db import copy_file
 import os
 
+    run_time = end_time - start_time
+    run_time = str(run_time) + '0'
+    if len(run_time.split(':')[0]) == 1:
+        run_time = '0' + run_time
+
+
 def record_run_time():
     # 记录运行时间
     session = None
