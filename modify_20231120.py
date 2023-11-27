@@ -4,6 +4,103 @@ from src.models import  RobotRec
 from src.db import copy_file
 import os
 
+
+qna
+
+        '主要财务数据': {
+            '资产类': [['资产类'], ],
+            '损益类': [['损益类'], ],
+            '资产类1': [['主要财务指标'], ['资产类']],
+            '损益类1': [['主要财务指标'], ['损益类']],
+        },
+        '资产负债表': {
+            '资产负债表': [['资产负债表'], ['资产']],
+        },
+
+
+            elif '财务报表' in text:
+                dic_info['财务数据单位信息'] = text
+
+            elif '财务报表' in arr[0][0]:
+                dic_info['财务数据单位信息'] = arr[0][-1]
+
+
+    elif '资产类1' in dic_info:
+        arr = dic_info['资产类1']
+
+        row = 0
+        dic_year = {}
+        for row_data in arr:
+            col = 0
+            if row_data[0] == '主要财务指标':
+                continue
+            for cell in row_data:
+                col += 1
+                if row_data[0] == '资产类':
+                    if '年' in cell:
+                        arr_fis.append(FinancialIndicators())
+                        dic_year[col] = len(arr_fis) - 1
+                        arr_fis[dic_year[col]].year = cell.replace('年', '')
+                        arr_fis[dic_year[col]].currency = currency
+                        if int(float(arr_fis[dic_year[col]].year)) > max_year:
+                            max_year = int(float(arr_fis[dic_year[col]].year))
+                elif col in dic_year:
+                    if '资产总计' in row_data[0]:
+                        arr_fis[dic_year[col]].total_assets = tools.convert_float(cell) * multiple * coefficient
+                    elif '负债合计' in row_data[0]:
+                        arr_fis[dic_year[col]].total_liabilities = tools.convert_float(cell) * multiple * coefficient
+                    elif '所有者权益' in row_data[0] :
+                        arr_fis[dic_year[col]].owners_equity = tools.convert_float(cell) * multiple * coefficient
+                    elif '主营业收入' in row_data[0] :
+                        arr_fis[dic_year[col]].total_revenue = tools.convert_float(cell) * multiple * coefficient
+                    elif '利润总额' in row_data[0]:
+                        arr_fis[dic_year[col]].total_profit = tools.convert_float(cell) * multiple * coefficient
+                    elif '净利润' in row_data[0] :
+                        arr_fis[dic_year[col]].net_profit = tools.convert_float(cell) * multiple * coefficient
+
+
+    elif '损益类1' in dic_info:
+        arr = dic_info['损益类1']
+
+        row = 0
+        dic_year = {}
+        index = 0
+        for ff in arr_fis:
+            dic_year[ff.year] = index
+            index += 1
+        for row_data in arr:
+            col = 0
+            if row_data[0] == '主要财务指标':
+                continue
+            for cell in row_data:
+                col += 1
+                if row_data[0] == '损益类':
+                    if '年' in cell:
+                        # arr_fis.append(FinancialIndicators())
+                        year_int = int(float(cell.replace('年', '')))
+                        if year_int in dic_year:
+                            dic_year[col] = dic_year[year_int]
+                        # arr_fis[dic_year[col]].year = cell.replace('年', '')
+                        # arr_fis[dic_year[col]].currency = currency
+                        # if int(float(arr_fis[dic_year[col]].year)) > max_year:
+                        #     max_year = int(float(arr_fis[dic_year[col]].year))
+                elif col in dic_year:
+                    if '资产总计' in row_data[0]:
+                        arr_fis[dic_year[col]].total_assets = tools.convert_float(cell) * multiple * coefficient
+                    elif '负债合计' in row_data[0]:
+                        arr_fis[dic_year[col]].total_liabilities = tools.convert_float(cell) * multiple * coefficient
+                    elif '所有者权益' in row_data[0] :
+                        arr_fis[dic_year[col]].owners_equity = tools.convert_float(cell) * multiple * coefficient
+                    elif '主营业收入' in row_data[0] :
+                        arr_fis[dic_year[col]].total_revenue = tools.convert_float(cell) * multiple * coefficient
+                    elif '利润总额' in row_data[0]:
+                        arr_fis[dic_year[col]].total_profit = tools.convert_float(cell) * multiple * coefficient
+                    elif '净利润' in row_data[0] :
+                        arr_fis[dic_year[col]].net_profit = tools.convert_float(cell) * multiple * coefficient
+
+-==========================================================
+
+
     run_time = end_time - start_time
     run_time = str(run_time) + '0'
     if len(run_time.split(':')[0]) == 1:
