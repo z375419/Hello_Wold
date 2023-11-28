@@ -1,0 +1,19 @@
+import os
+import shutil
+folders = [
+    r'D:\python\env\uiautobot\ExtractPDfInformation\data\已完成\55'
+]
+with open(r'4.txt', 'r', encoding='utf-8') as f:
+    txt = f.read()
+    folders = txt.split('\n')
+target_folder_path = r'D:\python\env\uiautobot\ExtractPDfInformation\data\未完成'
+for folder in folders:
+    if not folder:
+        continue
+    new_folder_path = os.path.join(target_folder_path, '00-' + os.path.basename(folder))
+    print(new_folder_path)
+    if os.path.exists(new_folder_path) == True:
+        shutil.rmtree(new_folder_path)
+    shutil.copytree(folder, new_folder_path)
+    with open(os.path.join(new_folder_path, 'status.txt'), 'w', encoding='utf-8') as f:
+        f.write('转换pdf完成')
