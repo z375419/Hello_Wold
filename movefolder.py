@@ -1,5 +1,7 @@
 import os
 import shutil
+
+青岛威纳的“青”字无法识别
 folders = [
     r'D:\python\env\uiautobot\ExtractPDfInformation\data\已完成\55'
 ]
