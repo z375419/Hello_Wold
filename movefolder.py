@@ -4,9 +4,9 @@ Sub CheckTables()
     Dim i As Integer, j As Integer, matchCount As Integer
     
     ' 预设的二维数组内容
-    myArray(1, 1) = "我们"
-    myArray(1, 2) = "他们"
-    myArray(2, 1) = "你们"
+    myArray(1, 1) = "企业名称"
+    myArray(1, 2) = ""
+    myArray(2, 1) = "英文名称"
     myArray(2, 2) = ""
 
     
