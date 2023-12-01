@@ -1,3 +1,5 @@
+转换pdf完成
+
 Sub CheckTables()
     Dim myArray(1 To 2, 1 To 2) As String
     Dim tbl As Table
