@@ -1,3 +1,26 @@
+def get_table_info(element, is_allograph = False) -> List:
+    arr = []
+    for row in element.rows:
+        sub_arr = []
+        old_text = ''
+        for cell in row.cells:
+            sub_text = cell.text
+            sub_text = sub_text.replace(' ', '').strip()
+            if is_allograph:
+                sub_text = tools.replace_encode(sub_text)
+            if sub_text == '':
+                if old_text == '注册日期':
+                    rs = cell._element.xpath('.//w:t')
+                    rs = ''.join([r.text for r in rs])
+                    sub_text = str(rs).replace(' ', '').strip()
+                    if is_allograph:
+                        sub_text = tools.replace_encode(sub_text)
+            old_text = sub_text
+            sub_arr.append(sub_text)
+        arr.append(sub_arr)
+    return arr
+
+
 转换pdf完成
 
 Sub CheckTables()
