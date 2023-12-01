@@ -1,3 +1,43 @@
+Sub CheckTables()
+    Dim myArray(1 To 2, 1 To 2) As String
+    Dim tbl As Table
+    Dim i As Integer, j As Integer, matchCount As Integer
+    
+    ' 预设的二维数组内容
+    myArray(1, 1) = "我们"
+    myArray(1, 2) = "他们"
+    myArray(2, 1) = "你们"
+    myArray(2, 2) = ""
+
+    
+    ' 循环遍历所有表格
+    For Each tbl In ActiveDocument.Tables
+        totalCount = 0
+        notMatchCount = 0
+        ' 检查表格第一行和第二行是否与预设的数组匹配
+        For i = 1 To UBound(myArray)
+            For j = 1 To UBound(myArray, 2)
+                If myArray(i, j) <> "" Then
+                    totalCount = totalCount + 1
+                    If InStr(tbl.Cell(i, j).Range.Text, myArray(i, j)) > 0 Then
+                    Else
+                        notMatchCount = notMatchCount + 1
+                    End If
+                End If
+            Next
+        Next
+        ' 如果匹配数量符合条件，则表示是寻找的表格
+        If totalCount > 0 And notMatchCount = 0 Then
+            MsgBox "找到匹配的表格"
+            Set c = tbl.Cell(1, 1)
+            ' 在此处可以添加其他操作
+        End If
+    Next tbl
+End Sub
+
+
+
+
 import os
 import shutil
 顺丰泰森
