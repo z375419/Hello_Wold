@@ -1,3 +1,5 @@
+东盈讯达
+
 def get_table_info(element, is_allograph = False) -> List:
     arr = []
     for row in element.rows:
